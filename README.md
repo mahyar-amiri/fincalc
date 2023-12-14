@@ -12,12 +12,10 @@ A Python Library for Calculating Financial Equations.
 * [Financial Calculator](#financial-calculator)
   * [Table of Contents](#table-of-contents)
   * [Installation](#installation)
-    * [Install](#install)
-    * [Upgrade](#upgrade)
   * [Usage](#usage)
-  * [Parameters](#parameters)
-    * [factors_calculator](#factorscalculator-)
-    * [interest_rate_calculator](#interestratecalculator-)
+  * [Functions](#functions)
+    * [calculate_factors](#calculate_factors)
+    * [interest_rate_calculator](#interest_rate_calculator-)
   * [Examples](#examples)
     * [Example 1](#example-1)
     * [Example 2](#example-2)
@@ -29,20 +27,10 @@ A Python Library for Calculating Financial Equations.
 
 ## Installation
 
-### Install
-
-Use python package manager (pip) to install.
+Use python package manager (pip) to install the latest version.
 
 ```bash
-pip install fincalc
-```
-
-### Upgrade
-
-Use python package manager (pip) to upgrade.
-
-```bash
-pip install fincalc --upgrade
+pip install -U fincalc
 ```
 
 ## Usage
@@ -51,16 +39,14 @@ pip install fincalc --upgrade
 from fincalc import FinancialCalculator
 
 FC = FinancialCalculator()
-result = FC.factors_calculator('200(P/A,8.25%,3)')
-print(result)
 ```
 
-## Parameters
+## Functions
 
-### factors_calculator 
+### calculate_factors
 
 ```python
-factors_calculator(equation: str, rfp: int = 5)
+calculate_factors(equation: str, rfp: int = 5) -> dict
 ```
 
 - `equation` : User input equation.
@@ -69,7 +55,7 @@ factors_calculator(equation: str, rfp: int = 5)
 ### interest_rate_calculator 
 
 ```python
-interest_rate_calculator(equation: str, rfp: int = 5, interest_rate_range: tuple = (-10, 100))
+calculate_ror(equation: str, rfp: int = 5, interest_rate_range: tuple = (-10, 100)) -> dict
 ```
 
 - `equation` : User input equation.
@@ -84,8 +70,17 @@ interest_rate_calculator(equation: str, rfp: int = 5, interest_rate_range: tuple
 from fincalc import FinancialCalculator
 
 FC = FinancialCalculator()
-result = FC.factors_calculator('200(P/A,8.25%,3)')
+
+result = FC.calculate_factors('1500*(P/A,12,3)*(P/F,12,6) + 200*(P/A,12,8,4)')
 print(result)
+
+# output
+# {
+#   'equation': '1500*(P/A,12,3)*(P/F,12,6) + 200*(P/A,12,8,4)',
+#   'factors': {'(p/a,12,3)': 2.40183, '(p/f,12,6)': 0.50663, '(p/a,12,8,4)': 3.38462},
+#   'answer': '1500*2.40183*0.50663 + 200*3.38462',
+#   'result': 2502.1827
+# }
 ```
 
 ---
@@ -96,8 +91,16 @@ print(result)
 from fincalc import FinancialCalculator
 
 FC = FinancialCalculator()
-result = FC.interest_rate_calculator('-60000+12000*(p/a,i,25)+3000(p/f,i,25)')
+
+result = FC.calculate_ror('-60000 + 12000*(P/A,i,25) + 3000*(P/F,i,25)')
 print(result)
+
+# output
+# {
+#   'equation': '-60000 + 12000*(P/A,i,25) + 3000*(P/F,i,25)',
+#   'factors': ['(P/A,i,25)', '(P/F,i,25)'],
+#   'result': 19.79
+# }
 ```
 
 ---
@@ -123,4 +126,3 @@ print(result)
 - [x] (A/P,i%,n)
 - [x] (A/F,i%,n)
 - [x] (A/G,i%,n)
-
